@@ -1,6 +1,6 @@
-Builds/
-Temp/
-obj/
-Library/
-airhockey-mac.app/
-airhockey-ar.apk
+**/.DS_Store
+**/.vs/
+**/Library/
+**/Temp/
+**.app/
+**.apk
