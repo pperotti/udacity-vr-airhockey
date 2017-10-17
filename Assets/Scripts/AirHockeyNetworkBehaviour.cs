@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public abstract  class AirHockeyNetworkBehaviour : NetworkBehaviour
+public abstract class AirHockeyNetworkBehaviour : NetworkBehaviour
 {
 	Vector3 scale;
 
@@ -38,6 +38,7 @@ public abstract  class AirHockeyNetworkBehaviour : NetworkBehaviour
 
 	protected Vector3 scaledVelocityVector (Vector3 vector)
 	{
+		Debug.Log ("ScaledVelocityVector=" + vector + "scale=" + scale);
 		//return new Vector3 (vector.x * scale.x, vector.y * scale.y, vector.z * scale.z);
 		return vector;
 	}

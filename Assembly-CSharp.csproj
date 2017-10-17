@@ -104,14 +104,13 @@
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\SingletonComponentProvider.cs" />
      <Compile Include="Assets\Scripts\AirHockeyNetworkBehaviour.cs" />
      <Compile Include="Assets\Scripts\ARGameController.cs" />
-     <Compile Include="Assets\Scripts\DiskScript.cs" />
-     <Compile Include="Assets\Scripts\DiskSpawnScript.cs" />
-     <Compile Include="Assets\Scripts\DragPlayer.cs" />
+     <Compile Include="Assets\Scripts\Disk.cs" />
+     <Compile Include="Assets\Scripts\DiskSpawnBehavior.cs" />
      <Compile Include="Assets\Scripts\HUD.cs" />
      <Compile Include="Assets\Scripts\Logic.cs" />
      <Compile Include="Assets\Scripts\MatchStats.cs" />
+     <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\Utilities.cs" />
-     <Compile Include="Assets\Scripts\wall.cs" />
      <None Include="Assets\GoogleARCore\HelloARExample\Materials\Shaders\PlaneGrid.shader" />
      <None Include="Assets\GoogleARCore\HelloARExample\Materials\Shaders\MobileDiffuseWithLightEstimation.shader" />
      <None Include="Assets\GoogleARCore\HelloARExample\Materials\Shaders\PointCloud.shader" />

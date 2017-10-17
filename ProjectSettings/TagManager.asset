@@ -20,6 +20,12 @@ TagManager:
   - hostCamera
   - puck
   - wall
+  - ClientCamera
+  - HostCamera
+  - RemotePlayer
+  - LocalPlayer
+  - Wall
+  - plane
   layers:
   - Default
   - TransparentFX

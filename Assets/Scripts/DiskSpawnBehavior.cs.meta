@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 17d4efa821fd84851a40f48ea23f47be
+timeCreated: 1508266742
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - diskPrefab: {fileID: 1347640418865450, guid: 7a908fb46dba3461a98500fe15d2942d,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

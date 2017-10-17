@@ -12,8 +12,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Welcome.unity
     guid: 21cc285e87ee94b00b1a1d6bd56ab742
   - enabled: 0
-    path: Assets/Scenes/ARKitGame.unity
-    guid: a0c36e52b605048d2a27d9a7e2d27869
-  - enabled: 0
     path: Assets/Scenes/ARCoreGame.unity
     guid: 30ee9a6313bdb42ee85829665c59791e
