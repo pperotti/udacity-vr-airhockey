@@ -141,10 +141,13 @@ public class Player : AirHockeyNetworkBehaviour
 				Debug.Log ("No new velocity");
 			}*/
 
-			disk.GetComponent<Rigidbody> ().velocity = scaledVelocityVector (new Vector3 (6, 0, 6));
-			//Vector3 newVector = GetComponent<Rigidbody>().velocity * 2000;
+			//disk.GetComponent<Rigidbody> ().velocity = scaledVelocityVector (new Vector3 (6, 0, 6));
+
+			float x = Random.Range(3, 6);
+
+			Vector3 newVector = new Vector3 (x, 0, x);
 			//Debug.Log (newVector);
-			//disk.GetComponent<Rigidbody> ().AddForce(newVector, ForceMode.Acceleration);
+			disk.GetComponent<Rigidbody> ().AddForce(newVector, ForceMode.Impulse);
         }
     }
 

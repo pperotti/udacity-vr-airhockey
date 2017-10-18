@@ -27,6 +27,16 @@ public class Disk : AirHockeyNetworkBehaviour
 		//rigidBody.mass = scaledVelocityX (rigidBody.mass);
     }
 
+	void Update() {
+
+		if (transform.localPosition.y >= 1f) {
+			transform.position = new Vector3 (transform.localPosition.x,
+				1.0f, transform.localPosition.z);		
+		}
+
+		// Inject velocity on collision enter...
+	}
+
     private void msgFromServer(NetworkMessage netMsg)
     {
         var msg = netMsg.ReadMessage<ScoresMessage>();
