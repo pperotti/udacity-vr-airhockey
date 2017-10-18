@@ -13,8 +13,7 @@ public class Player : AirHockeyNetworkBehaviour
 	bool isHost = false;
     bool painted = false;
 
-	int limit = 4;
-	int lastX = 0;
+	float limit = 3.5f;
 
     void Start()
     {
@@ -143,7 +142,9 @@ public class Player : AirHockeyNetworkBehaviour
 			}*/
 
 			disk.GetComponent<Rigidbody> ().velocity = scaledVelocityVector (new Vector3 (6, 0, 6));
-			//disk.GetComponent<Rigidbody> ().AddRelativeForce(new Vector3(4,0,4));
+			//Vector3 newVector = GetComponent<Rigidbody>().velocity * 2000;
+			//Debug.Log (newVector);
+			//disk.GetComponent<Rigidbody> ().AddForce(newVector, ForceMode.Acceleration);
         }
     }
 
@@ -156,7 +157,7 @@ public class Player : AirHockeyNetworkBehaviour
 	void moveRight() 
 	{
 		Debug.Log ("move right " + transform.localPosition.x);
-		//transform.Translate (x, transform.localPosition.y, transform.localPosition.z);
-		transform.GetComponent<Rigidbody>().AddForce(new Vector3 (0.5f, 0, 0));
+		transform.Translate (transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
+		//transform.GetComponent<Rigidbody>().AddForce(new Vector3 (0.5f, 0, 0));
 	}
 }

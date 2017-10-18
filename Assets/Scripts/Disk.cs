@@ -23,7 +23,8 @@ public class Disk : AirHockeyNetworkBehaviour
         hostScore = GameObject.FindGameObjectWithTag("hostScore");
         clientScore = GameObject.FindGameObjectWithTag("clientScore");
 
-		rigidBody.mass = scaledVelocityX (rigidBody.mass);
+		//transform.position = new Vector3 (0.0f, 0.5f, 0.0f);
+		//rigidBody.mass = scaledVelocityX (rigidBody.mass);
     }
 
     private void msgFromServer(NetworkMessage netMsg)
@@ -61,7 +62,7 @@ public class Disk : AirHockeyNetworkBehaviour
     void OnCollisionEnter(Collision other)
     {
 		Debug.Log ("On Collission Enter " + other);
-        if (collisionsManagedByHost)
+        /*if (collisionsManagedByHost)
         {
 			// scores managed by server only
 			manageScores(other);
@@ -79,7 +80,7 @@ public class Disk : AirHockeyNetworkBehaviour
             Physics.IgnoreCollision(c1, oc);
             Destroy(c1);
             Destroy(oc);
-        }
+        }*/
     }
 
 	// from https://forum.unity.com/threads/clampmagnitude-why-no-minimum.388488/
