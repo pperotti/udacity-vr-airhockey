@@ -107,7 +107,6 @@
      <Compile Include="Assets\Scripts\Disk.cs" />
      <Compile Include="Assets\Scripts\DiskSpawnBehavior.cs" />
      <Compile Include="Assets\Scripts\HUD.cs" />
-     <Compile Include="Assets\Scripts\Logic.cs" />
      <Compile Include="Assets\Scripts\MatchStats.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\Utilities.cs" />
