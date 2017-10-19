@@ -17,18 +17,18 @@ public class Player : AirHockeyNetworkBehaviour
 
     void Start()
     {
-		Debug.Log ("Start");
+		Debug.Log ("Player.Start");
     }
 
     public override void OnStartServer()
     {
-		Debug.Log ("On Start Server");
+		Debug.Log ("Player.OnStartServer");
 		isHost = true;
     }
 
     public override void OnStartLocalPlayer()
     {
-		Debug.Log ("On Start Local Player");
+		Debug.Log ("Player.OnStartLocalPlayer");
 
 		plane = GameObject.FindGameObjectWithTag ("plane");
 		Debug.Log ("Plane=" + plane);
@@ -58,7 +58,7 @@ public class Player : AirHockeyNetworkBehaviour
 				if (currentX + offsetX >= -limit) {
 					transform.Translate (offsetX, 0, 0);
 				} else {
-					transform.localPosition = new Vector3(-limit, 
+					transform.localPosition = new Vector3(limit, 
 						transform.localPosition.y,
 						transform.localPosition.z);
 				}
@@ -103,7 +103,7 @@ public class Player : AirHockeyNetworkBehaviour
 
 		transform.localPosition = new Vector3 (
 			localPlayerPosition.transform.localPosition.x, 
-			transform.localPosition.y,
+			localPlayerPosition.transform.localPosition.y,
 			localPlayerPosition.transform.localPosition.z);
     }
 

@@ -14,6 +14,9 @@ public abstract class AirHockeyNetworkBehaviour : NetworkBehaviour
 	private void Awake ()
 	{
 		airHockeyRoot = GameObject.FindGameObjectWithTag ("AirHockey");
+
+		Debug.Log ("AirHockeyNetworkBehaviour.Awake=>" + airHockeyRoot);
+
 		scale = airHockeyRoot.transform.localScale;
 
 		transform.parent = airHockeyRoot.transform;
@@ -24,6 +27,7 @@ public abstract class AirHockeyNetworkBehaviour : NetworkBehaviour
 	protected GameObject airHockeyInstantiate (GameObject prefab, Vector3 position, Quaternion rotation)
 	{
 		GameObject obj = Instantiate(prefab);
+		Debug.Log ("AirHockeyNetworkBehaviour.airHockeyInstantiate => " + prefab);
 		obj.transform.parent = airHockeyRoot.transform;
 		obj.transform.localPosition = position;
 		obj.transform.localRotation = rotation;

@@ -29,10 +29,13 @@ public class Disk : AirHockeyNetworkBehaviour
 
 	void Update() {
 
+		/*
+		//CHECK IF THIS IS NEEDED
 		if (transform.localPosition.y >= 1f) {
 			transform.position = new Vector3 (transform.localPosition.x,
 				1.0f, transform.localPosition.z);		
 		}
+		*/
 
 		// Inject velocity on collision enter...
 	}

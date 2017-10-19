@@ -7,9 +7,13 @@ public class DiskSpawnBehavior : AirHockeyNetworkBehaviour {
 
     public override void OnStartServer()
 	{
-		Debug.Log ("DiskSpawnBehavior.OnStartServer");
+		Debug.Log ("DiskSpawnBehavior.OnStartServer -> " + diskPrefab);
 
-		NetworkServer.Spawn(airHockeyInstantiate(diskPrefab, Vector3.zero, Quaternion.Euler(Vector3.zero)));
+		NetworkServer.Spawn(airHockeyInstantiate(
+			diskPrefab, 
+			diskPrefab.transform.localPosition, 
+			diskPrefab.transform.localRotation));
+		//NetworkServer.Spawn(diskPrefab);
 	}
 
 }
