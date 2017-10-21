@@ -54,27 +54,12 @@ public class Player : AirHockeyNetworkBehaviour
 			if (offsetX < 0) { //Left
 
 				Debug.Log ("offset=" + offsetX);
-
-				if (currentX + offsetX >= -limit) {
-					transform.Translate (offsetX, 0, 0);
-				} else {
-					transform.localPosition = new Vector3(limit, 
-						transform.localPosition.y,
-						transform.localPosition.z);
-				}
+				moveLeft (offsetX);
 
 			} else if (offsetX > 0) { //Right
 
 				Debug.Log ("offset=" + offsetX);
-
-				if (currentX + offsetX <= limit) {
-					transform.Translate (offsetX, 0, 0);
-				} else {
-					transform.localPosition = new Vector3 (limit, 
-						transform.localPosition.y,
-						transform.localPosition.z);
-				}
-
+				moveRight (offsetX);
 			}
 
 			if (isHost && Input.GetKeyDown(KeyCode.Space)) 
@@ -143,24 +128,41 @@ public class Player : AirHockeyNetworkBehaviour
 
 			//disk.GetComponent<Rigidbody> ().velocity = scaledVelocityVector (new Vector3 (6, 0, 6));
 
-			float x = Random.Range(3, 6);
+			float x = Random.Range(3, 5);
 
 			Vector3 newVector = new Vector3 (x, 0, x);
-			//Debug.Log (newVector);
 			disk.GetComponent<Rigidbody> ().AddForce(newVector, ForceMode.Impulse);
+
         }
     }
 
-	void moveLeft() 
+	void moveLeft(float offsetX) 
 	{
-		Debug.Log ("move left");
-		transform.GetComponent<Rigidbody>().AddForce(new Vector3 (-0.5f, 0, 0));
+		Debug.Log ("move left" + transform.localPosition.x);
+
+		var currentX = transform.localPosition.x;
+
+		if (currentX + offsetX >= -limit) {
+			transform.Translate (offsetX, 0, 0);
+		} else {
+			transform.localPosition = new Vector3(-limit, 
+				transform.localPosition.y,
+				transform.localPosition.z);
+		}
 	}
 
-	void moveRight() 
+	void moveRight(float offsetX) 
 	{
+		var currentX = transform.localPosition.x;
+
+		if (currentX + offsetX <= limit) {
+			transform.Translate (offsetX, 0, 0);
+		} else {
+			transform.localPosition = new Vector3 (limit, 
+				transform.localPosition.y,
+				transform.localPosition.z);
+		}
+
 		Debug.Log ("move right " + transform.localPosition.x);
-		transform.Translate (transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
-		//transform.GetComponent<Rigidbody>().AddForce(new Vector3 (0.5f, 0, 0));
 	}
 }

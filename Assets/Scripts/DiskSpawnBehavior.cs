@@ -13,7 +13,5 @@ public class DiskSpawnBehavior : AirHockeyNetworkBehaviour {
 			diskPrefab, 
 			diskPrefab.transform.localPosition, 
 			diskPrefab.transform.localRotation));
-		//NetworkServer.Spawn(diskPrefab);
 	}
-
 }
