@@ -96,20 +96,33 @@ public class Player : AirHockeyNetworkBehaviour
 				+ " right=" + horizontalLimit
 			);
 
-			if (inputX < 0 && posX - increment < -horizontalLimit) { //Left					
-				Debug.Log ("Move Left");
-				transform.localPosition = new Vector3 (-horizontalLimit, 
-					transform.localPosition.y,
-					transform.localPosition.z);
-			} else if (inputX > 0 && posX + increment > horizontalLimit) { //Right
-				Debug.Log ("Move Right");
-				transform.localPosition = new Vector3 (
-					horizontalLimit, 
-					transform.localPosition.y,
-					transform.localPosition.z);
-			} else {
-				transform.Translate (offsetX, 0, 0);
-			}
+			handleInput (inputX, offsetX, posX);
+		}
+	}
+
+	bool isLeft(float inputX) {
+		return (isHost) ? inputX < 0 : inputX > 0;
+	}
+
+	bool isRight(float inputX) {
+		return (isHost) ? inputX > 0 : inputX < 0;
+	}
+
+	void handleInput(float inputX, float offsetX, float posX) {
+		if (isLeft(inputX) && posX - increment < -horizontalLimit) {
+			Debug.Log ("Move Left");
+			transform.localPosition = new Vector3 (
+				-horizontalLimit, 
+				transform.localPosition.y,
+				transform.localPosition.z);
+		} else if (isRight(inputX) && posX + increment > horizontalLimit) {
+			Debug.Log ("Move Right");
+			transform.localPosition = new Vector3 (
+				horizontalLimit, 
+				transform.localPosition.y,
+				transform.localPosition.z);
+		} else {
+			transform.Translate (offsetX, 0, 0);
 		}
 	}
 
@@ -126,40 +139,7 @@ public class Player : AirHockeyNetworkBehaviour
 				+ " right=" + horizontalLimit
 			);
 
-			if (inputX > 0 && posX - increment < -horizontalLimit) {
-				transform.localPosition = new Vector3 (
-					-horizontalLimit, 
-					transform.localPosition.y,
-					transform.localPosition.z);
-			} else if (inputX < 0 && posX + increment > horizontalLimit) {
-				transform.localPosition = new Vector3 (
-					horizontalLimit, 
-					transform.localPosition.y,
-					transform.localPosition.z);
-			} else {
-				transform.Translate (offsetX, 0, 0);
-			}
-
-
-
-			/*
-			if (inputX > 0 && posX - increment > horizontalLimit) { //Right					
-				Debug.Log ("Move Right Corner");
-				transform.localPosition = new Vector3 (
-					-horizontalLimit, 
-					transform.localPosition.y,
-					transform.localPosition.z);
-			} else if (inputX < 0 && posX + increment > horizontalLimit) { //Left
-				Debug.Log ("Move Left Corner");
-				transform.localPosition = new Vector3 (
-					horizontalLimit, 
-					transform.localPosition.y,
-					transform.localPosition.z);
-			} else {
-				transform.Translate (offsetX, 0, 0);
-			}*/
-
-
+			handleInput (inputX, offsetX, posX);
 		}
 	}
 
