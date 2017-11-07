@@ -11,8 +11,7 @@ public class Player : AirHockeyNetworkBehaviour
 	private const float horizontalLimit = 3.5f;
 	private const float increment = 0.05f;
 
-	private GameObject plane;
-	private GameObject disk;
+	private Disk disk;
 
 	private GameObject leftMarker;
 	private GameObject rightMarker;
@@ -27,8 +26,10 @@ public class Player : AirHockeyNetworkBehaviour
 		Debug.Log ("Player.Start");
 
 		playerRigidBody = GetComponent<Rigidbody> ();
-		disk = GameObject.FindGameObjectWithTag("disk");
+		GameObject diskObject = GameObject.FindGameObjectWithTag("disk");
+		disk = diskObject.GetComponent<Disk>();
 
+		//Try using these markers instead of 'horizontalLimit'.
 		leftMarker = GameObject.FindGameObjectWithTag("leftMarker");
 		rightMarker = GameObject.FindGameObjectWithTag("rightMarker");
     }
@@ -43,8 +44,8 @@ public class Player : AirHockeyNetworkBehaviour
     {
 		Debug.Log ("Player.OnStartLocalPlayer");
 
-		plane = GameObject.FindGameObjectWithTag ("plane");
-		Debug.Log ("Plane=" + plane);
+		//plane = GameObject.FindGameObjectWithTag ("plane");
+		//Debug.Log ("Plane=" + plane);
 
 		prepareSpawnPoint();
 
@@ -71,8 +72,7 @@ public class Player : AirHockeyNetworkBehaviour
 
 			if (isHost
 			    && Input.GetKeyDown (KeyCode.Space)
-			    && disk.transform.localPosition.x == 0
-			    && disk.transform.localPosition.z == 0) {
+				&& disk.GetComponent<Rigidbody>().velocity == Vector3.zero) {
 				startMovingDisk ();
 			}
 		} else {
@@ -90,12 +90,6 @@ public class Player : AirHockeyNetworkBehaviour
 			var posX = playerRigidBody.transform.localPosition.x;
 			var offsetX = (inputX>0) ? increment : -increment;
 
-			Debug.Log ("HOST posX=" + posX
-				+ " offsetX=" + offsetX
-				+ " left=" + -horizontalLimit
-				+ " right=" + horizontalLimit
-			);
-
 			handleInput (inputX, offsetX, posX);
 		}
 	}
@@ -109,14 +103,12 @@ public class Player : AirHockeyNetworkBehaviour
 	}
 
 	void handleInput(float inputX, float offsetX, float posX) {
-		if (isLeft(inputX) && posX - increment < -horizontalLimit) {
-			Debug.Log ("Move Left");
+		if (isLeft(inputX) && posX - increment < -horizontalLimit) { //Left			
 			transform.localPosition = new Vector3 (
 				-horizontalLimit, 
 				transform.localPosition.y,
 				transform.localPosition.z);
-		} else if (isRight(inputX) && posX + increment > horizontalLimit) {
-			Debug.Log ("Move Right");
+		} else if (isRight(inputX) && posX + increment > horizontalLimit) { //Right			
 			transform.localPosition = new Vector3 (
 				horizontalLimit, 
 				transform.localPosition.y,
@@ -131,13 +123,6 @@ public class Player : AirHockeyNetworkBehaviour
 
 			var posX = playerRigidBody.transform.localPosition.x;
 			var offsetX = (inputX>0) ? -increment : increment;
-
-			Debug.Log ("CLIENT posX=" + posX
-				+ " input=" + inputX
-				+ " offsetX=" + offsetX
-				+ " left=" + -horizontalLimit
-				+ " right=" + horizontalLimit
-			);
 
 			handleInput (inputX, offsetX, posX);
 		}
@@ -184,19 +169,18 @@ public class Player : AirHockeyNetworkBehaviour
         //var players = GameObject.FindGameObjectsWithTag("Player");
         //if (players.Length == 2)
         {
-            
-			var velocity = disk.GetComponent<Rigidbody> ().velocity;
+			/*
+            var velocity = disk.GetComponent<Rigidbody> ().velocity;
 
-			/*float x = Random.Range(3, 5);
-
-			Vector3 newVector = new Vector3 (x, 0, x);
-			disk.GetComponent<Rigidbody> ().AddForce(newVector, ForceMode.Impulse);*/
+			Debug.Log ("Velocity=>" + velocity);
 
 			//float x = 10f * Time.deltaTime;
-			float x = Random.Range(1, 3) * 50f * Time.deltaTime;
-			float z = Random.Range(1, 3) * 50f * Time.deltaTime;
+			float x = Random.Range(3, 5) * 50f * Time.deltaTime;
+			float z = Random.Range(2, 4) * 50f * Time.deltaTime;
 			Debug.Log ("x=" + x + " z=" + z);
 			disk.GetComponent<Rigidbody> ().AddForce(x, 0f, z, ForceMode.Impulse);
+			*/
+			disk.addImpulse ();
 
         }
     }

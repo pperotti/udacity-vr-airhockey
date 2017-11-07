@@ -14,6 +14,8 @@ public class Disk : AirHockeyNetworkBehaviour
 
     private bool collisionsManagedByHost;
 
+	private GameObject tableBase;
+
     void Start()
     {
 		Debug.Log ("Disk.Start()");
@@ -21,7 +23,33 @@ public class Disk : AirHockeyNetworkBehaviour
         rigidBody = GetComponent<Rigidbody>();
         hostScore = GameObject.FindGameObjectWithTag("hostScore");
         clientScore = GameObject.FindGameObjectWithTag("clientScore");
+
+		tableBase = GameObject.FindGameObjectWithTag("plane");
+		Debug.Log ("tableBase=" + tableBase);
     }
+
+	void Update()
+	{
+		//Debug.Log ("Update " + gameObject.transform.localPosition);
+
+		//;
+
+		/*
+		float x = tableBase.gameObject.transform.localPosition.x;
+		float z = tableBase.gameObject.transform.localPosition.z;
+
+		if (x < x - 4 || x > x + 4) 
+		{
+			transform.localPosition = Vector3.zero;
+		} 
+		else if (z < z - 6 || z > z + 6) 
+		{
+			transform.localPosition = Vector3.zero;
+		}
+		*/
+			
+
+	}
 
     private void msgFromServer(NetworkMessage netMsg)
     {
@@ -73,8 +101,7 @@ public class Disk : AirHockeyNetworkBehaviour
     }
 
 	private void handleHostCollisions(Collision other)
-    {
-		Debug.Log ("Collision => " + other);
+    {		
 		if ("hostGoalLine".Equals (other.gameObject.tag)) {
 			MatchStats.instance.scoreInHostGoalLine ();
 			sendScoreToClient ();
@@ -82,14 +109,31 @@ public class Disk : AirHockeyNetworkBehaviour
 			MatchStats.instance.scoreInClientGoalLine ();
 			sendScoreToClient ();
 		} else if ("Player".Equals (other.gameObject.tag)) {
-			float x = Random.Range(1, 3) * 50f * Time.deltaTime;
-			float z = Random.Range(1, 3) * 50f * Time.deltaTime;
-			Debug.Log ("PLAYER IMPULSE!!!! ---------------------- x=" + x + " z=" + z);
-			GetComponent<Rigidbody> ().AddForce(x, 0f, z, ForceMode.Impulse);
-		} else {
-			Debug.Log ("Not score collision ...");
+			if (rigidBody.velocity == Vector3.zero) {
+				addImpulse ();
+			}
+		} else if ("wall".Equals (other.gameObject.tag)) {
+			Debug.Log ("rigidBody.velocity=>" + rigidBody.velocity);
+
+			float x = System.Math.Min (3, rigidBody.velocity.x);
+			float z = System.Math.Min (3, rigidBody.velocity.z);
+
+			Debug.Log ("Updated rigidBody.velocity=>" + rigidBody.velocity);
+			rigidBody.velocity = new Vector3 (x, 0, z);
+					
 		}
     }
+
+	public void addImpulse() {		
+		float x = Random.Range(3, 5) * 30f * Time.deltaTime;
+		float z = Random.Range(2, 4) * 30f * Time.deltaTime;
+
+		x = System.Math.Min (5, x);
+		z = System.Math.Min (5, z);
+
+		Debug.Log ("\n\nNEW IMPULSE!!!! x=" + x + " z=" + z + "\n\n");
+		GetComponent<Rigidbody> ().AddForce(x, 0f, z, ForceMode.Impulse);
+	}
 
     private void sendScoreToClient()
     {
