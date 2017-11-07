@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -22,23 +21,7 @@ public class Disk : AirHockeyNetworkBehaviour
         rigidBody = GetComponent<Rigidbody>();
         hostScore = GameObject.FindGameObjectWithTag("hostScore");
         clientScore = GameObject.FindGameObjectWithTag("clientScore");
-
-		//transform.position = new Vector3 (0.0f, 0.5f, 0.0f);
-		//rigidBody.mass = scaledVelocityX (rigidBody.mass);
     }
-
-	void Update() {
-
-		/*
-		//CHECK IF THIS IS NEEDED
-		if (transform.localPosition.y >= 1f) {
-			transform.position = new Vector3 (transform.localPosition.x,
-				1.0f, transform.localPosition.z);		
-		}
-		*/
-
-		// Inject velocity on collision enter...
-	}
 
     private void msgFromServer(NetworkMessage netMsg)
     {
@@ -74,17 +57,10 @@ public class Disk : AirHockeyNetworkBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-		Debug.Log ("On Collission Enter " + other);
-        /*if (collisionsManagedByHost)
+		Debug.Log ("On Collission Enter " + other + " rb=" + other.gameObject.tag);
+        if (collisionsManagedByHost)
         {
-			// scores managed by server only
-			manageScores(other);
-
-			Vector3 vel = rigidBody.velocity;
-
-            // limit bouncing speed
-			Vector3 limitedVelocity = ClampMagnitude (rigidBody.velocity, scaledVelocityX (maxSpeed), scaledVelocityX(minSpeed));
-			rigidBody.velocity = limitedVelocity;
+			handleHostCollisions(other);
         }
         else
         {
@@ -93,30 +69,26 @@ public class Disk : AirHockeyNetworkBehaviour
             Physics.IgnoreCollision(c1, oc);
             Destroy(c1);
             Destroy(oc);
-        }*/
+        }
     }
 
-	// from https://forum.unity.com/threads/clampmagnitude-why-no-minimum.388488/
-	public static Vector3 ClampMagnitude(Vector3 v, float max, float min)
-	{
-		double sm = v.sqrMagnitude;
-		if(sm > (double)max * (double)max) return v.normalized * max;
-		else if(sm < (double)min * (double)min) return v.normalized * min;
-		return v;
-	}
-
-    private void manageScores(Collision other)
+	private void handleHostCollisions(Collision other)
     {
-        if ("hostGoalLine".Equals(other.gameObject.tag))
-        {
-            MatchStats.instance.scoreInHostGoalLine();
-            sendScoreToClient();
-        }
-        else if ("clientGoalLine".Equals(other.gameObject.tag))
-        {
-            MatchStats.instance.scoreInClientGoalLine();
-            sendScoreToClient();
-        }
+		Debug.Log ("Collision => " + other);
+		if ("hostGoalLine".Equals (other.gameObject.tag)) {
+			MatchStats.instance.scoreInHostGoalLine ();
+			sendScoreToClient ();
+		} else if ("clientGoalLine".Equals (other.gameObject.tag)) {
+			MatchStats.instance.scoreInClientGoalLine ();
+			sendScoreToClient ();
+		} else if ("Player".Equals (other.gameObject.tag)) {
+			float x = Random.Range(1, 3) * 50f * Time.deltaTime;
+			float z = Random.Range(1, 3) * 50f * Time.deltaTime;
+			Debug.Log ("PLAYER IMPULSE!!!! ---------------------- x=" + x + " z=" + z);
+			GetComponent<Rigidbody> ().AddForce(x, 0f, z, ForceMode.Impulse);
+		} else {
+			Debug.Log ("Not score collision ...");
+		}
     }
 
     private void sendScoreToClient()

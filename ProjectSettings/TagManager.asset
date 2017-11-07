@@ -24,8 +24,9 @@ TagManager:
   - HostCamera
   - RemotePlayer
   - LocalPlayer
-  - Wall
   - plane
+  - leftMarker
+  - rightMarker
   layers:
   - Default
   - TransparentFX
