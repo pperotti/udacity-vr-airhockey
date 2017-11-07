@@ -8,6 +8,9 @@ public class Player : AirHockeyNetworkBehaviour
 {
 	public const float movementSpeed = 10f;
 
+	private const float horizontalLimit = 3.5f;
+	private const float increment = 0.05f;
+
 	private GameObject plane;
 	private GameObject disk;
 
@@ -16,8 +19,6 @@ public class Player : AirHockeyNetworkBehaviour
 
 	bool isHost = false;
     bool painted = false;
-
-	float limit = 3.5f;
 
 	private Rigidbody playerRigidBody;
 
@@ -56,65 +57,110 @@ public class Player : AirHockeyNetworkBehaviour
             painted = true;            
 		}
 
-		if (isLocalPlayer) 
-		{
+		//if (isLocalPlayer && leftMarker != null && rightMarker != null) {
+		if (isLocalPlayer) {
 			GetComponent<MeshRenderer> ().material.color = Color.red;
 
-			float inputX = Input.GetAxis ("Horizontal"); // * 0.1f;
-			float inputZ = Input.GetAxis ("Vertical");
-			//float moveX = inputX * movementSpeed * Time.deltaTime;
-			//float moveZ = inputZ * movementSpeed * Time.deltaTime;
+			float inputX = Input.GetAxis ("Horizontal"); 
 
-			if (inputX != 0) {
+			if (isHost) {
+				handleHostInput (inputX);
+			} else {
+				handleClientInput (inputX);
+			}
 
-				var posX = playerRigidBody.transform.localPosition.x;
-				var offsetX = inputX;
-
-				Debug.Log ("posX=" + posX
-					+ " offsetX=" + offsetX 
-					+ " left=" + leftMarker.transform.localPosition.x
-					+ " right=" + rightMarker.transform.localPosition.x
-				);
-
-				if (posX + inputX < leftMarker.transform.localPosition.x) { //Left					
-					//offsetX = posX - leftMarker.transform.localPosition.x;
-					Debug.Log ("Move Left");
-					transform.localPosition = new Vector3(leftMarker.transform.localPosition.x, 
-						transform.localPosition.y,
-						transform.localPosition.z);
-				} else if (posX + inputX > rightMarker.transform.localPosition.x) { //Right
-					//offsetX = posX - rightMarker.transform.localPosition.x;
-					Debug.Log ("Move Right");
-					transform.localPosition = new Vector3(rightMarker.transform.localPosition.x, 
-						transform.localPosition.y,
-						transform.localPosition.z);
-				} else {
-					transform.Translate (offsetX, 0, 0);
-				}
-			}			  
-
-			/*
-			//approach 2
-			if (offsetX < 0) { //Left
-                   Debug.Log ("offset=" + offsetX);
-                   moveLeft (offsetX);
-            } else if (offsetX > 0) { //Right
-                   Debug.Log ("offset=" + offsetX);
-                   moveRight (offsetX);
-            }*/
-
-			if (isHost 
-				&& Input.GetKeyDown(KeyCode.Space) 
-				&& disk.transform.localPosition.x == 0
-				&& disk.transform.localPosition.z == 0)
-			{
+			if (isHost
+			    && Input.GetKeyDown (KeyCode.Space)
+			    && disk.transform.localPosition.x == 0
+			    && disk.transform.localPosition.z == 0) {
 				startMovingDisk ();
 			}
+		} else {
+			//Debug.Log ("Input NOT handled!");
 		}
     }
 
 	void OnDestroy() {
 		print("DragPlayer destroyed");
+	}
+
+	void handleHostInput(float inputX) {
+		if (inputX != 0) {
+
+			var posX = playerRigidBody.transform.localPosition.x;
+			var offsetX = (inputX>0) ? increment : -increment;
+
+			Debug.Log ("HOST posX=" + posX
+				+ " offsetX=" + offsetX
+				+ " left=" + -horizontalLimit
+				+ " right=" + horizontalLimit
+			);
+
+			if (inputX < 0 && posX - increment < -horizontalLimit) { //Left					
+				Debug.Log ("Move Left");
+				transform.localPosition = new Vector3 (-horizontalLimit, 
+					transform.localPosition.y,
+					transform.localPosition.z);
+			} else if (inputX > 0 && posX + increment > horizontalLimit) { //Right
+				Debug.Log ("Move Right");
+				transform.localPosition = new Vector3 (
+					horizontalLimit, 
+					transform.localPosition.y,
+					transform.localPosition.z);
+			} else {
+				transform.Translate (offsetX, 0, 0);
+			}
+		}
+	}
+
+	void handleClientInput(float inputX) {
+		if (inputX != 0) {
+
+			var posX = playerRigidBody.transform.localPosition.x;
+			var offsetX = (inputX>0) ? -increment : increment;
+
+			Debug.Log ("CLIENT posX=" + posX
+				+ " input=" + inputX
+				+ " offsetX=" + offsetX
+				+ " left=" + -horizontalLimit
+				+ " right=" + horizontalLimit
+			);
+
+			if (inputX > 0 && posX - increment < -horizontalLimit) {
+				transform.localPosition = new Vector3 (
+					-horizontalLimit, 
+					transform.localPosition.y,
+					transform.localPosition.z);
+			} else if (inputX < 0 && posX + increment > horizontalLimit) {
+				transform.localPosition = new Vector3 (
+					horizontalLimit, 
+					transform.localPosition.y,
+					transform.localPosition.z);
+			} else {
+				transform.Translate (offsetX, 0, 0);
+			}
+
+
+
+			/*
+			if (inputX > 0 && posX - increment > horizontalLimit) { //Right					
+				Debug.Log ("Move Right Corner");
+				transform.localPosition = new Vector3 (
+					-horizontalLimit, 
+					transform.localPosition.y,
+					transform.localPosition.z);
+			} else if (inputX < 0 && posX + increment > horizontalLimit) { //Left
+				Debug.Log ("Move Left Corner");
+				transform.localPosition = new Vector3 (
+					horizontalLimit, 
+					transform.localPosition.y,
+					transform.localPosition.z);
+			} else {
+				transform.Translate (offsetX, 0, 0);
+			}*/
+
+
+		}
 	}
 
 	void prepareSpawnPoint()
@@ -173,35 +219,5 @@ public class Player : AirHockeyNetworkBehaviour
 			disk.GetComponent<Rigidbody> ().AddForce(x, 0f, z, ForceMode.Impulse);
 
         }
-    }
-
-	void moveLeft(float offsetX) 
-    {
-       Debug.Log ("move left" + transform.localPosition.x);
-
-       var currentX = transform.localPosition.x;
-
-       if (currentX + offsetX >= -limit) {
-			transform.Translate (offsetX, 0, 0);
-       } else {
-            transform.localPosition = new Vector3(-limit, 
-				transform.localPosition.y,
-                transform.localPosition.z);
-       }
-    }
-
-    void moveRight(float offsetX) 
-    {
-       var currentX = transform.localPosition.x;
-
-       if (currentX + offsetX <= limit) {
-            transform.Translate (offsetX, 0, 0);
-       } else {
-            transform.localPosition = new Vector3 (limit, 
-                transform.localPosition.y,
-                transform.localPosition.z);
-       }
-
-       Debug.Log ("move right " + transform.localPosition.x);
     }
 }
