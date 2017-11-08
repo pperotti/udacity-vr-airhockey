@@ -104,6 +104,7 @@
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\MarshalingHelper.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\ProvidedSingleton.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\SingletonComponentProvider.cs" />
+     <Compile Include="Assets\HostGoalScript.cs" />
      <Compile Include="Assets\Score.cs" />
      <Compile Include="Assets\ScoreScript.cs" />
      <Compile Include="Assets\Scripts\AirHockeyNetworkBehaviour.cs" />

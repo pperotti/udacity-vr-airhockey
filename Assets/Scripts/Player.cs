@@ -73,7 +73,7 @@ public class Player : AirHockeyNetworkBehaviour
 			if (isHost
 			    && Input.GetKeyDown (KeyCode.Space)
 				&& disk.GetComponent<Rigidbody>().velocity == Vector3.zero) {
-				startMovingDisk ();
+				moveDisk ();
 			}
 		} else {
 			//Debug.Log ("Input NOT handled!");
@@ -163,25 +163,12 @@ public class Player : AirHockeyNetworkBehaviour
 		}
     }
 
-    void startMovingDisk()
+    void moveDisk()
     {
-		Debug.Log ("startMovingDisk");
-        //var players = GameObject.FindGameObjectsWithTag("Player");
+		//var players = GameObject.FindGameObjectsWithTag("Player");
         //if (players.Length == 2)
         {
-			/*
-            var velocity = disk.GetComponent<Rigidbody> ().velocity;
-
-			Debug.Log ("Velocity=>" + velocity);
-
-			//float x = 10f * Time.deltaTime;
-			float x = Random.Range(3, 5) * 50f * Time.deltaTime;
-			float z = Random.Range(2, 4) * 50f * Time.deltaTime;
-			Debug.Log ("x=" + x + " z=" + z);
-			disk.GetComponent<Rigidbody> ().AddForce(x, 0f, z, ForceMode.Impulse);
-			*/
 			disk.addImpulse ();
-
         }
     }
 }

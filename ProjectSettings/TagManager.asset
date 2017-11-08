@@ -27,6 +27,9 @@ TagManager:
   - plane
   - leftMarker
   - rightMarker
+  - Wall
+  - resultDialog
+  - resultLabel
   layers:
   - Default
   - TransparentFX

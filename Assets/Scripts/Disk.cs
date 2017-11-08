@@ -28,29 +28,6 @@ public class Disk : AirHockeyNetworkBehaviour
 		Debug.Log ("tableBase=" + tableBase);
     }
 
-	void Update()
-	{
-		//Debug.Log ("Update " + gameObject.transform.localPosition);
-
-		//;
-
-		/*
-		float x = tableBase.gameObject.transform.localPosition.x;
-		float z = tableBase.gameObject.transform.localPosition.z;
-
-		if (x < x - 4 || x > x + 4) 
-		{
-			transform.localPosition = Vector3.zero;
-		} 
-		else if (z < z - 6 || z > z + 6) 
-		{
-			transform.localPosition = Vector3.zero;
-		}
-		*/
-			
-
-	}
-
     private void msgFromServer(NetworkMessage netMsg)
     {
         var msg = netMsg.ReadMessage<ScoresMessage>();
@@ -85,7 +62,7 @@ public class Disk : AirHockeyNetworkBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-		Debug.Log ("On Collission Enter " + other + " rb=" + other.gameObject.tag);
+		//Debug.Log ("On Collission Enter " + other + " rb=" + other.gameObject.tag);
         if (collisionsManagedByHost)
         {
 			handleHostCollisions(other);
@@ -113,12 +90,12 @@ public class Disk : AirHockeyNetworkBehaviour
 				addImpulse ();
 			}
 		} else if ("wall".Equals (other.gameObject.tag)) {
-			Debug.Log ("rigidBody.velocity=>" + rigidBody.velocity);
+			//Debug.Log ("rigidBody.velocity=>" + rigidBody.velocity);
 
 			float x = System.Math.Min (3, rigidBody.velocity.x);
 			float z = System.Math.Min (3, rigidBody.velocity.z);
 
-			Debug.Log ("Updated rigidBody.velocity=>" + rigidBody.velocity);
+			//Debug.Log ("Updated rigidBody.velocity=>" + rigidBody.velocity);
 			rigidBody.velocity = new Vector3 (x, 0, z);
 					
 		}
@@ -131,7 +108,7 @@ public class Disk : AirHockeyNetworkBehaviour
 		x = System.Math.Min (5, x);
 		z = System.Math.Min (5, z);
 
-		Debug.Log ("\n\nNEW IMPULSE!!!! x=" + x + " z=" + z + "\n\n");
+		//Debug.Log ("\n\nNEW IMPULSE!!!! x=" + x + " z=" + z + "\n\n");
 		GetComponent<Rigidbody> ().AddForce(x, 0f, z, ForceMode.Impulse);
 	}
 

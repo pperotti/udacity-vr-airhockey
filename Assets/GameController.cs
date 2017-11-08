@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour {
 	public int clientScore;
 	public int hostScore;
 
+	public GameObject resultDialog;
+
 	private void Awake()
 	{
 		if (Instance == null) {
@@ -23,16 +25,34 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		resultDialog = GameObject.FindGameObjectWithTag("resultDialog");
+		resultDialog.SetActive (false);
 	}
 
 	public void incrementClientScore()
 	{
-		clientScore++;
+		Debug.Log ("incrementClientScore=" + ++clientScore);
+		hasWon (clientScore, true);
 	}
 
 	public void incrementHostScore()
 	{
-		hostScore++;
+		Debug.Log ("incrementHostScore=" + ++hostScore);
+		hasWon (hostScore, false);
+	}
+
+	private void hasWon(int score, bool isClient) {
+
+		//TODO: See how to transmit the result over the network
+		if (score == 1) {
+
+			//TODO: Improve text descriptions
+			var who = isClient ? "Client" : "Host";
+			who += " WON!!!";
+
+			resultDialog.transform.Find ("ResultLabel").GetComponent<UnityEngine.UI.Text> ().text = who;
+			resultDialog.SetActive (true);
+		}
+
 	}
 }
