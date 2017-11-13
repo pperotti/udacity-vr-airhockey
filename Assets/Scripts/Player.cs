@@ -163,8 +163,8 @@ public class Player : AirHockeyNetworkBehaviour
 
     void moveDisk()
     {
-		//var players = GameObject.FindGameObjectsWithTag("Player");
-        //if (players.Length == 2)
+		var players = GameObject.FindGameObjectsWithTag("Player");
+        if (players.Length == 2)
         {
 			disk.AddImpulse ();
         }

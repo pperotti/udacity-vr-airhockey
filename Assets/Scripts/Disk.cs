@@ -20,6 +20,8 @@ public class Disk : AirHockeyNetworkBehaviour
     {
 		Debug.Log ("Disk.Start()");
 
+		GameController.Instance.setDisk (this);
+
         rigidBody = GetComponent<Rigidbody>();
         hostScore = GameObject.FindGameObjectWithTag("hostScore");
         clientScore = GameObject.FindGameObjectWithTag("clientScore");
@@ -27,6 +29,11 @@ public class Disk : AirHockeyNetworkBehaviour
 		tableBase = GameObject.FindGameObjectWithTag("plane");
 		Debug.Log ("tableBase=" + tableBase);
     }
+
+	void OnDestroy()
+	{
+		GameController.Instance.setDisk (null);
+	}
 
     private void MsgFromServer(NetworkMessage netMsg)
     {
@@ -123,7 +130,8 @@ public class Disk : AirHockeyNetworkBehaviour
         RefreshScore(msg);
 
 		GameController.Instance.CheckHostScore ();
-
+		Debug.Log ("DISK.client score=" + msg.clientScore + " hostScore=" + msg.hostScore);
+		Debug.Log ("DISK.isGameOver=>" + GameController.Instance.IsGameOver());
 		if (GameController.Instance.IsGameOver()) 
 		{
 			GameController.Instance.StopHost ();

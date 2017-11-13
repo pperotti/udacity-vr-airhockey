@@ -27,7 +27,7 @@ public class HUD : MonoBehaviour
 
 		if (stopServerButton != null) 
 		{
-			stopServerButton.onClick.AddListener(delegate {ClickStopServer();});
+			stopServerButton.onClick.AddListener(delegate {ClickDisconnect();});
 		}
 
 		startServerButton.gameObject.SetActive (true);
@@ -58,19 +58,24 @@ public class HUD : MonoBehaviour
 		stopServerButton.gameObject.SetActive (true);
 	}
 
-	public void ClickStopServer()
+	public void ClickDisconnect()
 	{
-		Debug.Log ("Stop Server networkManager.isNetworkActive=" + GameController.Instance.IsNetworkActive());
+		Debug.Log ("ClickDisconnect networkManager.isNetworkActive=" + GameController.Instance.IsNetworkActive());
 
-		if (GameController.Instance.IsNetworkActive()) 
+		Disk currentDisk = GameController.Instance.getDisk ();
+		Debug.Log ("currentDisk->" + currentDisk);
+		if (GameController.Instance.IsNetworkActive() && currentDisk != null) 
 		{
-			GameController.Instance.StopHost ();
-
-			UpdateStopServerUI ();
+			if (currentDisk.isClient) {
+				GameController.Instance.StopClient ();
+			} else if (currentDisk.isServer) {
+				GameController.Instance.StopHost ();
+			}
+			UpdateDisconnectUI ();
 		}
 	}
 
-	public void UpdateStopServerUI()
+	public void UpdateDisconnectUI()
 	{
 		startServerButton.gameObject.SetActive (true);
 		startClientButton.gameObject.SetActive (true);

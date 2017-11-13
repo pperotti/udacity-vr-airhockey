@@ -16,10 +16,20 @@ public class GameController : MonoBehaviour {
 	public GameObject resultDialog;
 
 	/**
-	 * Scores.
+	 * HUD.
 	 */
 	public GameObject hudPanel;
 	private HUD hud;
+
+	/**
+	 * Score Panel
+	 */
+	public GameObject scorePanel;
+
+	/**
+	 * Current Disk in place
+	 */
+	private Disk disk;
 
 	/**
 	 * Network manager to control all the networking.
@@ -43,27 +53,25 @@ public class GameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		//resultDialog = GameObject.FindGameObjectWithTag("resultDialog");
 		resultDialog.SetActive (false);
 
 		//Network Manager 
 		networkManager = GetComponent<NetworkManager> ();
 
-		//resultDialog.transform.Find ("Quit").
-
 		hud = hudPanel.GetComponent <HUD> ();
+
 	}
 
 	public void IncrementClientScore()
 	{
 		++clientScore;
-		Debug.Log ("incrementClientScore=" + clientScore);
+		Debug.Log ("GC.incrementClientScore=" + clientScore);
 	}
 
 	public void IncrementHostScore()
 	{
 		++hostScore;
-		Debug.Log ("incrementHostScore=" + hostScore);	
+		Debug.Log ("GC.incrementHostScore=" + hostScore);	
 	}
 
 	public void CheckHostScore()
@@ -75,7 +83,6 @@ public class GameController : MonoBehaviour {
 			} else {
 				ShowHostLostDialog ();
 			}
-			resetScores ();
 		} 
 	}
 
@@ -88,7 +95,6 @@ public class GameController : MonoBehaviour {
 			} else {
 				ShowClientLostDialog ();
 			}
-			resetScores ();
 		} 
 	}
 
@@ -96,10 +102,15 @@ public class GameController : MonoBehaviour {
 	{
 		hostScore = 0;
 		clientScore = 0;
+
+		scorePanel.transform.Find ("hostScore").GetComponent<UnityEngine.UI.Text> ().text = "Host: 0";
+		scorePanel.transform.Find ("clientScore").GetComponent<UnityEngine.UI.Text> ().text = "Client: 0";
 	}
 
 	public bool IsGameOver()
 	{
+		Debug.Log ("GC.IsGameOver=" + (clientScore == MAX_SCORE || hostScore == MAX_SCORE));
+		Debug.Log ("GC.clientScore=" + clientScore + " hostScore=" + hostScore);
 		return clientScore == MAX_SCORE || hostScore == MAX_SCORE;
 	}
 
@@ -130,7 +141,8 @@ public class GameController : MonoBehaviour {
 	{	
 		ShowDialog ("Client Won!", Color.green, delegate {
 			resultDialog.SetActive (false);
-			hud.UpdateStopServerUI();
+			hud.UpdateDisconnectUI();
+			resetScores();
 		});
 	}
 
@@ -138,7 +150,8 @@ public class GameController : MonoBehaviour {
 	{
 		ShowDialog ("Client Lost!", Color.red, delegate {
 			resultDialog.SetActive (false);
-			hud.UpdateStopServerUI();
+			hud.UpdateDisconnectUI();
+			resetScores();
 		});
 	}
 
@@ -146,7 +159,8 @@ public class GameController : MonoBehaviour {
 	{
 		ShowDialog ("Host Win!", Color.green, delegate {
 			resultDialog.SetActive (false);
-			hud.UpdateStopServerUI();
+			hud.UpdateDisconnectUI();
+			resetScores();
 		});
 	}
 
@@ -154,18 +168,21 @@ public class GameController : MonoBehaviour {
 	{
 		ShowDialog ("Host Lost!", Color.red, delegate {
 			resultDialog.SetActive (false);
-			hud.UpdateStopServerUI();
+			hud.UpdateDisconnectUI();
+			resetScores();
 		});
 	}
 
 	public void StartServer(string networkAddress)
 	{
+		Debug.Log ("GC.StartServer");
 		networkManager.networkAddress = networkAddress;
 		networkManager.StartHost ();
 	}
 
 	public void StartClient(string networkAddress) 
 	{
+		Debug.Log ("GC.StartClient");
 		networkManager.networkAddress = networkAddress;
 		networkManager.networkPort = 7777;
 		networkManager.StartClient ();
@@ -173,13 +190,15 @@ public class GameController : MonoBehaviour {
 
 	public void StopHost() 
 	{
-		//networkManager.StopHost ();
+		Debug.Log ("GC.StopHost");
 		NetworkManager.singleton.StopHost ();
 	}
 
 	public void StopClient()
 	{
-		NetworkManager.singleton.client.Disconnect ();
+		Debug.Log ("GC.Disconnect");
+		networkManager.StopClient ();
+		//NetworkManager.singleton.client.Disconnect ();
 	}
 
 	public bool IsNetworkActive()
@@ -191,4 +210,15 @@ public class GameController : MonoBehaviour {
 	{
 		return networkManager.isActiveAndEnabled;
 	}
+
+	public void setDisk(Disk currentDisk)
+	{
+		disk = currentDisk;
+	}
+
+	public Disk getDisk()
+	{
+		return disk;
+	}
+		
 }
