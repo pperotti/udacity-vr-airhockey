@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class HUD : MonoBehaviour 
 {
-	private NetworkManager networkManager;
-
 	public InputField inputField;
 
 	public Button startServerButton;
@@ -17,83 +15,100 @@ public class HUD : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		networkManager = GetComponent<NetworkManager> ();
-
 		if (startServerButton != null) 
 		{
-			startServerButton.onClick.AddListener(delegate {StartServer();});
+			startServerButton.onClick.AddListener(delegate {ClickStartServer();});
 		}
 
 		if (startClientButton != null) 
 		{
-			startClientButton.onClick.AddListener(delegate {StartClient();});
+			startClientButton.onClick.AddListener(delegate {ClickStartClient();});
 		}
 
 		if (stopServerButton != null) 
 		{
-			stopServerButton.onClick.AddListener(delegate {StopServer();});
+			stopServerButton.onClick.AddListener(delegate {ClickStopServer();});
 		}
 
 		startServerButton.gameObject.SetActive (true);
 		startClientButton.gameObject.SetActive (true);
 		stopServerButton.gameObject.SetActive (false);
 	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-		
-	}
 
-	void StartServer()
+	public void ClickStartServer()
 	{
-		Debug.Log ("Start Server networkManager.isNetworkActive=" + networkManager.isNetworkActive 
-			+ " networkManager.isActiveAndEnabled=" + networkManager.isActiveAndEnabled
+		Debug.Log ("Start Server networkManager.isNetworkActive=" + GameController.Instance.IsNetworkActive() 
+			+ " networkManager.isActiveAndEnabled=" + GameController.Instance.IsNetworkActiveAndEnabled()
 			+ " ip=" + inputField.text
 		);
 
-		if (networkManager.isNetworkActive == false) 
+		if (GameController.Instance.IsNetworkActive() == false) 
 		{
-			networkManager.networkAddress = inputField.text;
-			networkManager.StartHost ();
+			GameController.Instance.StartServer (inputField.text);
 
-			startServerButton.gameObject.SetActive (false);
-			startClientButton.gameObject.SetActive (false);
-			stopServerButton.gameObject.SetActive (true);
+			UpdateStartServerUI ();
 		}
 			
 	}
 
-	void StopServer()
+	public void UpdateStartServerUI()
 	{
-		Debug.Log ("Stop Server networkManager.isNetworkActive=" + networkManager.isNetworkActive);
+		startServerButton.gameObject.SetActive (false);
+		startClientButton.gameObject.SetActive (false);
+		stopServerButton.gameObject.SetActive (true);
+	}
 
-		if (networkManager.isNetworkActive) 
+	public void ClickStopServer()
+	{
+		Debug.Log ("Stop Server networkManager.isNetworkActive=" + GameController.Instance.IsNetworkActive());
+
+		if (GameController.Instance.IsNetworkActive()) 
 		{
-			networkManager.StopHost ();	
+			GameController.Instance.StopHost ();
 
-			startServerButton.gameObject.SetActive (true);
-			startClientButton.gameObject.SetActive (true);
-			stopServerButton.gameObject.SetActive (false);
+			UpdateStopServerUI ();
 		}
 	}
 
-	void StartClient()
+	public void UpdateStopServerUI()
 	{
-		Debug.Log ("Start Client networkManager.isNetworkActive=" + networkManager.isNetworkActive 
-			+ " networkManager.isNetworkActive=" + networkManager.isNetworkActive
+		startServerButton.gameObject.SetActive (true);
+		startClientButton.gameObject.SetActive (true);
+		stopServerButton.gameObject.SetActive (false);
+	}
+
+	/**
+	 * Method invoked when the user clicked on the Start client button
+	 */
+	public void ClickStartClient()
+	{
+		Debug.Log ("Start Client networkManager.isNetworkActive=" + GameController.Instance.IsNetworkActive() 
+			+ " networkManager.isNetworkActive=" + GameController.Instance.IsNetworkActiveAndEnabled()
 			+ " ip=" + inputField.text
 		);
 
-		if (networkManager.isNetworkActive == false) 
+		if (GameController.Instance.IsNetworkActive() == false) 
 		{
-			networkManager.networkAddress = inputField.text;
-			networkManager.networkPort = 7777;
-			networkManager.StartClient ();
+			GameController.Instance.StartClient (inputField.text);
 
-			startServerButton.gameObject.SetActive (false);
-			startClientButton.gameObject.SetActive (false);
-			stopServerButton.gameObject.SetActive (true);
+			UpdateStartClientUI ();
 		}
+	}
+
+	public void UpdateStartClientUI()
+	{
+		startServerButton.gameObject.SetActive (false);
+		startClientButton.gameObject.SetActive (false);
+		stopServerButton.gameObject.SetActive (true);
+	}
+
+	void OnServerError(NetworkConnection nc, int errorCode)
+	{
+		Debug.Log ("OnServerError!");
+	}
+
+	void OnClientError(NetworkConnection nc, int errorCode) 
+	{
+		Debug.Log ("OnClientError!");
 	}
 }

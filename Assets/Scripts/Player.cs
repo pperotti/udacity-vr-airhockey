@@ -75,9 +75,7 @@ public class Player : AirHockeyNetworkBehaviour
 				&& disk.GetComponent<Rigidbody>().velocity == Vector3.zero) {
 				moveDisk ();
 			}
-		} else {
-			//Debug.Log ("Input NOT handled!");
-		}
+		} 
     }
 
 	void OnDestroy() {
@@ -168,7 +166,7 @@ public class Player : AirHockeyNetworkBehaviour
 		//var players = GameObject.FindGameObjectsWithTag("Player");
         //if (players.Length == 2)
         {
-			disk.addImpulse ();
+			disk.AddImpulse ();
         }
     }
 }

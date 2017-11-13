@@ -21,7 +21,10 @@ public abstract class AirHockeyNetworkBehaviour : NetworkBehaviour
 
 		transform.parent = airHockeyRoot.transform;
 
-		transform.localScale = new Vector3 (transform.localScale.x * scale.x, transform.localScale.y * scale.y, transform.localScale.z * scale.z);
+		transform.localScale = new Vector3 (
+			transform.localScale.x * scale.x, 
+			transform.localScale.y * scale.y, 
+			transform.localScale.z * scale.z);
 	}
 
 	protected GameObject airHockeyInstantiate (GameObject prefab, Vector3 position, Quaternion rotation)
@@ -43,7 +46,6 @@ public abstract class AirHockeyNetworkBehaviour : NetworkBehaviour
 	protected Vector3 scaledVelocityVector (Vector3 vector)
 	{
 		Debug.Log ("ScaledVelocityVector=" + vector + "scale=" + scale);
-		//return new Vector3 (vector.x * scale.x, vector.y * scale.y, vector.z * scale.z);
 		return vector;
 	}
 

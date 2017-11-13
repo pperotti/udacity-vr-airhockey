@@ -10,11 +10,11 @@ public class ScoreScript : MonoBehaviour {
 	// Use this for initialization
 	void Update () {
 		if (hostScore != null) {
-			hostScore.GetComponent<TextMesh> ().text = "" + GameController.Instance.hostScore;
+			hostScore.GetComponent<TextMesh> ().text = "Host: " + GameController.Instance.hostScore;
 		}
 
 		if (clientScore != null) {
-			clientScore.GetComponent<TextMesh> ().text = "" + GameController.Instance.clientScore;
+			clientScore.GetComponent<TextMesh> ().text = "Client: " + GameController.Instance.clientScore;
 		}
 	}
 

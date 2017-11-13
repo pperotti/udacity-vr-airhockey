@@ -45,4 +45,9 @@ public class Utilities : MonoBehaviour {
 		}
 	}
 
+	public static void ShowDialog() {
+
+
+	}
+
 }

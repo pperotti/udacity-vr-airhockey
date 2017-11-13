@@ -51,8 +51,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\ClientGoalScript.cs" />
-     <Compile Include="Assets\GameController.cs" />
      <Compile Include="Assets\GoogleARCore\HelloARExample\Scripts\HelloARController.cs" />
      <Compile Include="Assets\GoogleARCore\HelloARExample\Scripts\PlaneAttachment.cs" />
      <Compile Include="Assets\GoogleARCore\HelloARExample\Scripts\PointcloudVisualizer.cs" />
@@ -104,15 +102,14 @@
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\MarshalingHelper.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\ProvidedSingleton.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\SingletonComponentProvider.cs" />
-     <Compile Include="Assets\HostGoalScript.cs" />
-     <Compile Include="Assets\Score.cs" />
      <Compile Include="Assets\ScoreScript.cs" />
      <Compile Include="Assets\Scripts\AirHockeyNetworkBehaviour.cs" />
      <Compile Include="Assets\Scripts\ARGameController.cs" />
      <Compile Include="Assets\Scripts\Disk.cs" />
      <Compile Include="Assets\Scripts\DiskSpawnBehavior.cs" />
+     <Compile Include="Assets\Scripts\GameController.cs" />
      <Compile Include="Assets\Scripts\HUD.cs" />
-     <Compile Include="Assets\Scripts\MatchStats.cs" />
+     <Compile Include="Assets\Scripts\HUDHandler.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\Utilities.cs" />
      <None Include="Assets\GoogleARCore\HelloARExample\Materials\Shaders\PlaneGrid.shader" />

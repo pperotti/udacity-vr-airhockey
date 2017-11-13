@@ -28,19 +28,27 @@ public class Disk : AirHockeyNetworkBehaviour
 		Debug.Log ("tableBase=" + tableBase);
     }
 
-    private void msgFromServer(NetworkMessage netMsg)
+    private void MsgFromServer(NetworkMessage netMsg)
     {
+		Debug.Log ("Message from server");
         var msg = netMsg.ReadMessage<ScoresMessage>();
-        refreshScore(msg);
+        RefreshScore(msg);
+
+		GameController.Instance.CheckClientScore ();
+
+		if (GameController.Instance.IsGameOver()) 
+		{
+			GameController.Instance.StopClient ();
+		}
     }
 
-    private void refreshScore(ScoresMessage msg)
-    {
+    private void RefreshScore(ScoresMessage msg)
+    {		
 		if (hostScore != null) {
-			hostScore.GetComponent<Text> ().text = "" + msg.hostScore;
+			hostScore.GetComponent<Text> ().text = "Host: " + msg.hostScore;
 		}
 		if (clientScore != null) {
-			clientScore.GetComponent<Text> ().text = "" + msg.clientScore;
+			clientScore.GetComponent<Text> ().text = "Client: " + msg.clientScore;
 		}
     }
 
@@ -56,7 +64,7 @@ public class Disk : AirHockeyNetworkBehaviour
 		Debug.Log ("Disk.OnStartClient()");
 
         if (!collisionsManagedByHost) {
-            NetworkManager.singleton.client.RegisterHandler(1001, msgFromServer);
+            NetworkManager.singleton.client.RegisterHandler(1001, MsgFromServer);
         }
     }
 
@@ -65,7 +73,7 @@ public class Disk : AirHockeyNetworkBehaviour
 		//Debug.Log ("On Collission Enter " + other + " rb=" + other.gameObject.tag);
         if (collisionsManagedByHost)
         {
-			handleHostCollisions(other);
+			HandleHostCollisions(other);
         }
         else
         {
@@ -77,48 +85,49 @@ public class Disk : AirHockeyNetworkBehaviour
         }
     }
 
-	private void handleHostCollisions(Collision other)
+	private void HandleHostCollisions(Collision other)
     {		
 		if ("hostGoalLine".Equals (other.gameObject.tag)) {
-			MatchStats.instance.scoreInHostGoalLine ();
-			sendScoreToClient ();
+			GameController.Instance.IncrementHostScore();
+			SendScoreToClient ();
 		} else if ("clientGoalLine".Equals (other.gameObject.tag)) {
-			MatchStats.instance.scoreInClientGoalLine ();
-			sendScoreToClient ();
+			GameController.Instance.IncrementClientScore ();
+			SendScoreToClient ();
 		} else if ("Player".Equals (other.gameObject.tag)) {
 			if (rigidBody.velocity == Vector3.zero) {
-				addImpulse ();
+				AddImpulse ();
 			}
 		} else if ("wall".Equals (other.gameObject.tag)) {
-			//Debug.Log ("rigidBody.velocity=>" + rigidBody.velocity);
-
 			float x = System.Math.Min (3, rigidBody.velocity.x);
 			float z = System.Math.Min (3, rigidBody.velocity.z);
-
-			//Debug.Log ("Updated rigidBody.velocity=>" + rigidBody.velocity);
-			rigidBody.velocity = new Vector3 (x, 0, z);
-					
+			rigidBody.velocity = new Vector3 (x, 0, z);					
 		}
     }
 
-	public void addImpulse() {		
+	public void AddImpulse() {		
 		float x = Random.Range(3, 5) * 30f * Time.deltaTime;
 		float z = Random.Range(2, 4) * 30f * Time.deltaTime;
 
 		x = System.Math.Min (5, x);
 		z = System.Math.Min (5, z);
 
-		//Debug.Log ("\n\nNEW IMPULSE!!!! x=" + x + " z=" + z + "\n\n");
 		GetComponent<Rigidbody> ().AddForce(x, 0f, z, ForceMode.Impulse);
 	}
 
-    private void sendScoreToClient()
+    private void SendScoreToClient()
     {
-        var msg = new ScoresMessage();
-        msg.hostScore = MatchStats.instance.Host;
-        msg.clientScore = MatchStats.instance.Client;
+        var msg = new ScoresMessage();        
+		msg.hostScore = GameController.Instance.hostScore;        
+		msg.clientScore = GameController.Instance.clientScore;
         NetworkServer.SendToAll(1001, msg);
-        refreshScore(msg);
+        RefreshScore(msg);
+
+		GameController.Instance.CheckHostScore ();
+
+		if (GameController.Instance.IsGameOver()) 
+		{
+			GameController.Instance.StopHost ();
+		}
     }
 
     public class ScoresMessage : MessageBase
