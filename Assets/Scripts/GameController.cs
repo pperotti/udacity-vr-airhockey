@@ -198,7 +198,6 @@ public class GameController : MonoBehaviour {
 	{
 		Debug.Log ("GC.Disconnect");
 		networkManager.StopClient ();
-		//NetworkManager.singleton.client.Disconnect ();
 	}
 
 	public bool IsNetworkActive()

@@ -112,8 +112,8 @@ public class Disk : AirHockeyNetworkBehaviour
     }
 
 	public void AddImpulse() {		
-		float x = Random.Range(3, 5) * 30f * Time.deltaTime;
-		float z = Random.Range(2, 4) * 30f * Time.deltaTime;
+		float x = Random.Range(3, 5) * 50f * Time.deltaTime;
+		float z = Random.Range(2, 4) * 50f * Time.deltaTime;
 
 		x = System.Math.Min (5, x);
 		z = System.Math.Min (5, z);
