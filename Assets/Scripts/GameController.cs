@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class GameController : MonoBehaviour {
+public class GameController : MonoBehaviour 
+{
 
 	public static GameController Instance { get; private set; }
 
@@ -38,8 +39,9 @@ public class GameController : MonoBehaviour {
 
 	private const int MAX_SCORE = 1;
 
-	private void Awake()
+	public void Awake()
 	{
+		Debug.Log ("GC.Awake");
 		if (Instance == null) {
 			Instance = this;
 			DontDestroyOnLoad (gameObject);
@@ -51,8 +53,10 @@ public class GameController : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () 
+	public virtual void Start () 
 	{
+		Debug.Log ("GC.Start");
+
 		resultDialog.SetActive (false);
 
 		//Network Manager 
