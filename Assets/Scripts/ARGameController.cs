@@ -160,7 +160,9 @@ public class ARGameController : MonoBehaviour
 
 	private void PresentObject(TrackableHit hit, Anchor anchor) 
 	{
-		if (m_objectToClonePrefab != null) {			
+		Debug.Log ("ARGameController: m_mainObjectPrefab=" + m_mainObjectPrefab);
+
+		if (m_mainObjectPrefab == null) {			
 
 			// Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
 			// from the anchor's tracking.
@@ -171,16 +173,23 @@ public class ARGameController : MonoBehaviour
 			objectToPresent.transform.LookAt(m_firstPersonCamera.transform);
 			objectToPresent.transform.rotation = Quaternion.Euler(0.0f,
 				objectToPresent.transform.rotation.eulerAngles.y, objectToPresent.transform.rotation.z);
+			objectToPresent.transform.localScale = 
+					new Vector3 (
+						m_mainObjectSizeSlider.value, 
+						m_mainObjectSizeSlider.value, 
+						m_mainObjectSizeSlider.value);
 
 			// Use a plane attachment component to maintain Andy's y-offset from the plane
 			// (occurs after anchor updates).
 			objectToPresent.GetComponent<PlaneAttachment>().Attach(hit.Plane);
 
+			Debug.Log ("Object Attached!");
+
 			m_mainObjectPrefab = objectToPresent;
 
 			Debug.Log ("ARGameController: PresentObject (m_mainObjectPrefab != null)=" + (m_mainObjectPrefab != null));
 		} else {
-			Debug.Log ("ARGameController: m_objectPrefab=null");
+			Debug.Log ("ARGameController: m_mainObjectPrefab!=null. No new instance will be created!");
 		}
 
 	}

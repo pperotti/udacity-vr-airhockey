@@ -427,9 +427,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 132412055}
   m_Direction: 0
   m_MinValue: 0.01
-  m_MaxValue: 0.02
+  m_MaxValue: 0.05
   m_WholeNumbers: 0
-  m_Value: 0.015
+  m_Value: 0.03
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -756,7 +756,7 @@ GameObject:
   - component: {fileID: 513813389}
   - component: {fileID: 513813388}
   m_Layer: 0
-  m_Name: GameController
+  m_Name: ARGameController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -776,7 +776,7 @@ MonoBehaviour:
   m_firstPersonCamera: {fileID: 375393572}
   m_trackedPlanePrefab: {fileID: 1654175882956584, guid: 6a35c744e5010405c847fad90282d2be,
     type: 2}
-  m_objectToClonePrefab: {fileID: 1063779990336370, guid: cfc4d4bbc9ea14079bd3b121776a8d06,
+  m_objectToClonePrefab: {fileID: 1609141476006944, guid: be9ada0bd163843d7bd11eda1040db3c,
     type: 2}
   m_searchingForPlaneUI: {fileID: 1047472427}
   m_leftButtonPrefab: {fileID: 869623507}
@@ -1506,8 +1506,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -50}
-  m_SizeDelta: {x: 80, y: 80}
+  m_AnchoredPosition: {x: 70, y: -74}
+  m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1572493399
 MonoBehaviour:
@@ -1638,7 +1638,7 @@ Prefab:
     - target: {fileID: 224236349849170944, guid: eab32435883f5fe42b2be9b19fb5aff4,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -73
+      value: -74
       objectReference: {fileID: 0}
     - target: {fileID: 224236349849170944, guid: eab32435883f5fe42b2be9b19fb5aff4,
         type: 2}
