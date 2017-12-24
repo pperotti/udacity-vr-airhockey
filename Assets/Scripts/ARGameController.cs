@@ -2,37 +2,42 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
-using GoogleAR;
 using GoogleARCore;
 using GoogleARCore.HelloAR;
 
 public class ARGameController : MonoBehaviour
 {
-	
 	/// <summary>
-	/// The first-person camera being used to render the passthrough camera.
+	/// The first-person camera being used to render the passthrough camera image (i.e. AR background).
 	/// </summary>
-	public Camera m_firstPersonCamera;
+	public Camera FirstPersonCamera;
 
 	/// <summary>
 	/// A prefab for tracking and visualizing detected planes.
 	/// </summary>
-	public GameObject m_trackedPlanePrefab;
+	public GameObject TrackedPlanePrefab;
 
 	/// <summary>
 	/// A model to place when a raycast from a user touch hits a plane.
 	/// </summary>
-	public GameObject m_objectToClonePrefab;
+	public GameObject ObjectToClonePrefab;
 
 	/// <summary>
 	/// A gameobject parenting UI for displaying the "searching for planes" snackbar.
 	/// </summary>
-	public GameObject m_searchingForPlaneUI;
+	public GameObject SearchingForPlaneUI;
 
 	/// <summary>
-	/// UI elements displayed in the main canvas.
+	/// A list to hold new planes ARCore began tracking in the current frame. This object is used across
+	/// the application to avoid per-frame allocations.
 	/// </summary>
-	//public GameObject m_scorePrefab;
+	private List<TrackedPlane> m_NewPlanes = new List<TrackedPlane>();
+
+	/// <summary>
+	/// A list to hold all planes ARCore is tracking in the current frame. This object is used across
+	/// the application to avoid per-frame allocations.
+	/// </summary>
+	private List<TrackedPlane> m_AllPlanes = new List<TrackedPlane>();
 
 	/// <summary>
 	//Buttons
@@ -54,20 +59,8 @@ public class ARGameController : MonoBehaviour
 	// Determine whether we can draw the main scene into the available plane or not. 
 	private bool m_canDrawObject = true;
 
-	private List<TrackedPlane> m_newPlanes = new List<TrackedPlane>();
-
-	private List<TrackedPlane> m_allPlanes = new List<TrackedPlane>();
-
-	private Color[] m_planeColors = new Color[] {
-		new Color(1.0f, 1.0f, 1.0f),
-		new Color(0.956f, 0.262f, 0.211f),
-		new Color(0.913f, 0.117f, 0.388f)
-	};
-
-	public void Start() {
-		
-		Debug.Log ("AGC.Start");
-
+	public void Start()
+	{
 		PresentControls (false);
 
 		//Create listener for the slider
@@ -84,12 +77,10 @@ public class ARGameController : MonoBehaviour
 		}	
 	}
 
-	public void DrawObjectToClone()
+	public void DrawObject()
 	{
-		Utilities.QuitOnConnectionErrors();
-
-		// The tracking state must be FrameTrackingState.Tracking in order to access the Frame.
-		if (Frame.TrackingState != FrameTrackingState.Tracking)
+		// Check that motion tracking is tracking.
+		if (Frame.TrackingState != TrackingState.Tracking)
 		{
 			const int LOST_TRACKING_SLEEP_TIMEOUT = 15;
 			Screen.sleepTimeout = LOST_TRACKING_SLEEP_TIMEOUT;
@@ -97,64 +88,62 @@ public class ARGameController : MonoBehaviour
 		}
 
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
-		Frame.GetNewPlanes(ref m_newPlanes);
 
 		// Iterate over planes found in this frame and instantiate corresponding GameObjects to visualize them.
-		for (int i = 0; i < m_newPlanes.Count; i++)
+		Frame.GetPlanes(m_NewPlanes, TrackableQueryFilter.New);
+		for (int i = 0; i < m_NewPlanes.Count; i++)
 		{
 			// Instantiate a plane visualization prefab and set it to track the new plane. The transform is set to
 			// the origin with an identity rotation since the mesh for our prefab is updated in Unity World
 			// coordinates.
-			GameObject planeObject = Instantiate(m_trackedPlanePrefab, Vector3.zero, Quaternion.identity,
+			GameObject planeObject = Instantiate(TrackedPlanePrefab, Vector3.zero, Quaternion.identity,
 				transform);
-			planeObject.GetComponent<TrackedPlaneVisualizer>().SetTrackedPlane(m_newPlanes[i]);
-
-			// Apply a random color and grid rotation.
-			planeObject.GetComponent<Renderer>().material.SetColor("_GridColor", m_planeColors[Random.Range(0,
-				m_planeColors.Length - 1)]);
-			planeObject.GetComponent<Renderer>().material.SetFloat("_UvRotation", Random.Range(0.0f, 360.0f));
+			planeObject.GetComponent<TrackedPlaneVisualizer>().Initialize(m_NewPlanes[i]);
 		}
 
 		// Disable the snackbar UI when no planes are valid.
+		Frame.GetPlanes(m_AllPlanes);
 		bool showSearchingUI = true;
-		Frame.GetAllPlanes(ref m_allPlanes);
-		for (int i = 0; i < m_allPlanes.Count; i++)
+		for (int i = 0; i < m_AllPlanes.Count; i++)
 		{
-			if (m_allPlanes[i].IsValid)
+			if (m_AllPlanes[i].TrackingState == TrackingState.Tracking)
 			{
 				showSearchingUI = false;
 				break;
 			}
 		}
 
-		m_searchingForPlaneUI.SetActive(showSearchingUI);
+		SearchingForPlaneUI.SetActive(showSearchingUI);
 		PresentControls (!showSearchingUI);
 
+		// If the player has not touched the screen, we are done with this update.
 		Touch touch;
 		if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
 		{
 			return;
 		}
 
+		// Raycast against the location the player touched to search for planes.
 		TrackableHit hit;
-		TrackableHitFlag raycastFilter = TrackableHitFlag.PlaneWithinBounds | TrackableHitFlag.PlaneWithinPolygon;
+		TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinBounds | TrackableHitFlags.PlaneWithinPolygon;
 
-		if (Session.Raycast(m_firstPersonCamera.ScreenPointToRay(touch.position), raycastFilter, out hit))
+		if (Session.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit))
 		{
 			m_canDrawObject = false;
 
 			// Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
 			// world evolves.
-			var anchor = Session.CreateAnchor(hit.Point, Quaternion.identity);
+			var anchor = hit.Trackable.CreateAnchor(hit.Pose);
 			PresentObject (hit, anchor);
 		}
 	}
+
 
 	public void Update()
 	{
 		if (m_canDrawObject)
 		{
-			DrawObjectToClone ();
+			DrawObject();
 		}
 	}
 
@@ -164,28 +153,24 @@ public class ARGameController : MonoBehaviour
 
 		if (m_mainObjectPrefab == null) {			
 
-			// Intanstiate an Andy Android object as a child of the anchor; it's transform will now benefit
-			// from the anchor's tracking.
-			var objectToPresent = Instantiate(m_objectToClonePrefab, hit.Point, Quaternion.identity,
-				anchor.transform);
+			var objectToClone = Instantiate(ObjectToClonePrefab, hit.Pose.position, hit.Pose.rotation);
 
 			// Andy should look at the camera but still be flush with the plane.
-			objectToPresent.transform.LookAt(m_firstPersonCamera.transform);
-			objectToPresent.transform.rotation = Quaternion.Euler(0.0f,
-				objectToPresent.transform.rotation.eulerAngles.y, objectToPresent.transform.rotation.z);
-			objectToPresent.transform.localScale = 
-					new Vector3 (
+			objectToClone.transform.LookAt(FirstPersonCamera.transform);
+			objectToClone.transform.rotation = Quaternion.Euler(0.0f,
+				objectToClone.transform.rotation.eulerAngles.y, objectToClone.transform.rotation.z);
+			
+			objectToClone.transform.localScale = new Vector3 (
 						m_mainObjectSizeSlider.value, 
 						m_mainObjectSizeSlider.value, 
 						m_mainObjectSizeSlider.value);
 
-			// Use a plane attachment component to maintain Andy's y-offset from the plane
-			// (occurs after anchor updates).
-			objectToPresent.GetComponent<PlaneAttachment>().Attach(hit.Plane);
+			// Make Andy model a child of the anchor.
+			objectToClone.transform.parent = anchor.transform;
 
 			Debug.Log ("Object Attached!");
 
-			m_mainObjectPrefab = objectToPresent;
+			m_mainObjectPrefab = objectToClone;
 
 			Debug.Log ("ARGameController: PresentObject (m_mainObjectPrefab != null)=" + (m_mainObjectPrefab != null));
 		} else {

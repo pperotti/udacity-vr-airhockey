@@ -11,10 +11,7 @@ public class Utilities : MonoBehaviour {
 	public static void QuitOnConnectionErrors()
 	{
 		// Do not update if ARCore is not tracking.
-		if (Session.ConnectionState == SessionConnectionState.DeviceNotSupported) {
-			Utilities.ShowAndroidToastMessage ("This device does not support ARCore.");
-			Application.Quit ();
-		} else if (Session.ConnectionState == SessionConnectionState.UserRejectedNeededPermission) {
+		 if (Session.ConnectionState == SessionConnectionState.UserRejectedNeededPermission) {
 			Utilities.ShowAndroidToastMessage ("Camera permission is needed to run this application.");
 			Application.Quit ();
 		} else if (Session.ConnectionState == SessionConnectionState.ConnectToServiceFailed) {

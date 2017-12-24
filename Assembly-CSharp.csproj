@@ -51,57 +51,75 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\GoogleARCore\HelloARExample\Scripts\HelloARController.cs" />
-     <Compile Include="Assets\GoogleARCore\HelloARExample\Scripts\PlaneAttachment.cs" />
-     <Compile Include="Assets\GoogleARCore\HelloARExample\Scripts\PointcloudVisualizer.cs" />
-     <Compile Include="Assets\GoogleARCore\HelloARExample\Scripts\TrackedPlaneVisualizer.cs" />
+     <Compile Include="Assets\GoogleARCore\Examples\ComputerVision\Scripts\ComputerVisionController.cs" />
+     <Compile Include="Assets\GoogleARCore\Examples\ComputerVision\Scripts\EdgeDetector.cs" />
+     <Compile Include="Assets\GoogleARCore\Examples\ComputerVision\Scripts\TextureReader.cs" />
+     <Compile Include="Assets\GoogleARCore\Examples\ComputerVision\Scripts\TextureReaderApi.cs" />
+     <Compile Include="Assets\GoogleARCore\Examples\HelloAR\Scripts\HelloARController.cs" />
+     <Compile Include="Assets\GoogleARCore\Examples\HelloAR\Scripts\PointcloudVisualizer.cs" />
+     <Compile Include="Assets\GoogleARCore\Examples\HelloAR\Scripts\TrackedPlaneVisualizer.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Anchor.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\AnchorTrackingState.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\AndroidPermissionsManager.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\AndroidPermissionsRequestResult.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiCoordinateFramePair.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiCoordinateFrameType.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiCoordinateFrameTypeExtensions.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiPlaneData.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\AnchorApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiArStatus.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiCameraMetadata.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiConstants.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiDisplayUvCoords.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiLightEstimateState.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiLightEstimateStateExtensions.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiPlaneFindingMode.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiPoseData.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiPoseStatusType.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiPoseStatusTypeExtensions.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiServiceErrorStatus.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiServiceErrorStatusExtensions.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiTangoEvent.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiTangoEventType.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\TangoClientApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiTrackableType.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiTrackableTypeExtensions.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiTrackingState.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiTrackingStateExtensions.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\ApiUpdateMode.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\CameraApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\CameraMetadataApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\FrameApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\HitTestApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\LightEstimateApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\NativeApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\PlaneApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\PointApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\PointCloudApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\PoseApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\SessionApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\SessionConfigApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\TrackableApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Api\TrackableListApi.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\ApiLightEstimationMode.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\ARCoreBackgroundRenderer.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\ARCoreSession.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\ARCoreSessionConfig.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Async\WaitForTaskCompletionYieldInstruction.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\AsyncTask.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\CameraMetadataTag.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\CameraMetadataValue.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\EnvironmentalLight.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Frame.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\FrameTrackingState.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\InvalidSessionAccessException.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\LightEstimate.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Managers\AnchorManager.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Managers\LightEstimateManager.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Managers\MotionTrackingManager.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\LightEstimateState.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Managers\CameraMetadataManager.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Managers\FrameManager.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Managers\PointCloudManager.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Managers\RaycastManager.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Managers\SessionManager.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Managers\TrackedPlaneManager.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Math\DMatrix4x4.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Math\DVector3.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Math\DVector4.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\PointCloud.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Managers\TrackableManager.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\PointCloudPoint.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Session.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\SessionComponent.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\SessionConfig.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\SessionConnectionState.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Trackable.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\TrackableHit.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\TrackableHitFlag.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\TrackableHitFlags.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\TrackableQueryFilter.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\TrackedPlane.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\TrackedPoint.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\TrackingState.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\ARDebug.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\Constants.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\EnvironmentBasedProvider.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\ConversionHelper.cs" />
+     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\IntPtrEqualityComparer.cs" />
      <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\MarshalingHelper.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\ProvidedSingleton.cs" />
-     <Compile Include="Assets\GoogleARCore\SDK\Scripts\Utility\SingletonComponentProvider.cs" />
      <Compile Include="Assets\ScoreScript.cs" />
      <Compile Include="Assets\Scripts\AirHockeyNetworkBehaviour.cs" />
      <Compile Include="Assets\Scripts\ARGameController.cs" />
@@ -112,10 +130,12 @@
      <Compile Include="Assets\Scripts\HUDHandler.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\Utilities.cs" />
-     <None Include="Assets\GoogleARCore\HelloARExample\Materials\Shaders\PlaneGrid.shader" />
-     <None Include="Assets\GoogleARCore\HelloARExample\Materials\Shaders\MobileDiffuseWithLightEstimation.shader" />
-     <None Include="Assets\GoogleARCore\HelloARExample\Materials\Shaders\PointCloud.shader" />
-     <None Include="Assets\GoogleARCore\HelloARExample\Materials\Shaders\MobileSpecularWithLightEstimation.shader" />
+     <None Include="Assets\GoogleARCore\Examples\HelloAR\Materials\Shaders\PlaneGrid.shader" />
+     <None Include="Assets\GoogleARCore\Examples\HelloAR\Materials\Shaders\MobileDiffuseWithLightEstimation.shader" />
+     <None Include="Assets\GoogleARCore\SDK\Materials\ARBackground.shader" />
+     <None Include="Assets\GoogleARCore\Examples\HelloAR\Materials\Shaders\PointCloud.shader" />
+     <None Include="Assets\GoogleARCore\Examples\ComputerVision\Materials\AREdgeDetectionBackground.shader" />
+     <None Include="Assets\GoogleARCore\Examples\HelloAR\Materials\Shaders\MobileSpecularWithLightEstimation.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -184,9 +204,6 @@
  </Reference>
  <Reference Include="UnityEditor.OSXStandalone.Extensions">
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
- </Reference>
- <Reference Include="GoogleAR.UnityNative">
- <HintPath>/Users/pperotti/Github/udacity-vr-airhockey-capstone/Assets/GoogleARCore/SDK/Plugins/GoogleAR.UnityNative.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>/Users/pperotti/Library/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.0/Editor/UnityEditor.Advertisements.dll</HintPath>
