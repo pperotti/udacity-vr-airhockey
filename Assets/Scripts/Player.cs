@@ -25,6 +25,8 @@ public class Player : AirHockeyNetworkBehaviour
 		playerRigidBody = GetComponent<Rigidbody> ();
 		GameObject diskObject = GameObject.FindGameObjectWithTag("disk");
 		disk = diskObject.GetComponent<Disk>();
+
+		Debug.Log ("Player.Started");
     }
 
     public override void OnStartServer()
@@ -71,9 +73,6 @@ public class Player : AirHockeyNetworkBehaviour
             painted = true;            
 		}
 
-		Debug.Log ("Player.Update isHost=" + isHost);
-
-		//if (isLocalPlayer && leftMarker != null && rightMarker != null) {
 		if (isLocalPlayer) 
 		{
 			GetComponent<MeshRenderer> ().material.color = Color.red;
