@@ -59,6 +59,9 @@ public class ARGameController : MonoBehaviour
 	// Determine whether we can draw the main scene into the available plane or not. 
 	private bool m_canDrawObject = true;
 
+	// Indicates the object was presented in the virtual space.
+	private bool m_isObjectDrawn = false;
+
 	public void Start()
 	{
 		PresentControls (false);
@@ -74,7 +77,21 @@ public class ARGameController : MonoBehaviour
 			m_closeButtonPrefab.onClick.AddListener(delegate {
 				OnCloseClicked();
 			});
-		}	
+		}
+
+		if (m_leftButtonPrefab != null)
+		{
+			m_leftButtonPrefab.onClick.AddListener(delegate {
+				OnLeftClicked();
+			});
+		}
+
+		if (m_rightButtonPrefab != null)
+		{
+			m_rightButtonPrefab.onClick.AddListener(delegate {
+				OnRightClicked();
+			});
+		}
 	}
 
 	public void DrawObject()
@@ -172,6 +189,8 @@ public class ARGameController : MonoBehaviour
 
 			m_mainObjectPrefab = objectToClone;
 
+			m_isObjectDrawn = true;
+
 			Debug.Log ("ARGameController: PresentObject (m_mainObjectPrefab != null)=" + (m_mainObjectPrefab != null));
 		} else {
 			Debug.Log ("ARGameController: m_mainObjectPrefab!=null. No new instance will be created!");
@@ -209,10 +228,12 @@ public class ARGameController : MonoBehaviour
 	private void OnLeftClicked() 
 	{
 		Debug.Log ("ARGameController: On Left");
+		GameLogic.Instance.OnLeftClick ();
 	}
 
 	private void OnRightClicked()
 	{
 		Debug.Log ("ARGameController: On Right");
+		GameLogic.Instance.OnRightClick ();
 	}
 }

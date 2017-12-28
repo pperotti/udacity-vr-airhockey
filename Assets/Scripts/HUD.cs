@@ -37,14 +37,14 @@ public class HUD : MonoBehaviour
 
 	public void ClickStartServer()
 	{
-		Debug.Log ("Start Server networkManager.isNetworkActive=" + GameController.Instance.IsNetworkActive() 
-			+ " networkManager.isActiveAndEnabled=" + GameController.Instance.IsNetworkActiveAndEnabled()
+		Debug.Log ("Start Server networkManager.isNetworkActive=" + GameLogic.Instance.IsNetworkActive() 
+			+ " networkManager.isActiveAndEnabled=" + GameLogic.Instance.IsNetworkActiveAndEnabled()
 			+ " ip=" + inputField.text
 		);
 
-		if (GameController.Instance.IsNetworkActive() == false) 
+		if (GameLogic.Instance.IsNetworkActive() == false) 
 		{
-			GameController.Instance.StartServer (inputField.text);
+			GameLogic.Instance.StartServer (inputField.text);
 
 			UpdateStartServerUI ();
 		}
@@ -60,16 +60,16 @@ public class HUD : MonoBehaviour
 
 	public void ClickDisconnect()
 	{
-		Debug.Log ("ClickDisconnect networkManager.isNetworkActive=" + GameController.Instance.IsNetworkActive());
+		Debug.Log ("ClickDisconnect networkManager.isNetworkActive=" + GameLogic.Instance.IsNetworkActive());
 
-		Disk currentDisk = GameController.Instance.getDisk ();
+		Disk currentDisk = GameLogic.Instance.getDisk ();
 		Debug.Log ("currentDisk->" + currentDisk);
-		if (GameController.Instance.IsNetworkActive() && currentDisk != null) 
+		if (GameLogic.Instance.IsNetworkActive() && currentDisk != null) 
 		{
 			if (currentDisk.isClient) {
-				GameController.Instance.StopClient ();
+				GameLogic.Instance.StopClient ();
 			} else if (currentDisk.isServer) {
-				GameController.Instance.StopHost ();
+				GameLogic.Instance.StopHost ();
 			}
 			UpdateDisconnectUI ();
 		}
@@ -87,14 +87,14 @@ public class HUD : MonoBehaviour
 	 */
 	public void ClickStartClient()
 	{
-		Debug.Log ("Start Client networkManager.isNetworkActive=" + GameController.Instance.IsNetworkActive() 
-			+ " networkManager.isNetworkActive=" + GameController.Instance.IsNetworkActiveAndEnabled()
+		Debug.Log ("Start Client networkManager.isNetworkActive=" + GameLogic.Instance.IsNetworkActive() 
+			+ " networkManager.isNetworkActive=" + GameLogic.Instance.IsNetworkActiveAndEnabled()
 			+ " ip=" + inputField.text
 		);
 
-		if (GameController.Instance.IsNetworkActive() == false) 
+		if (GameLogic.Instance.IsNetworkActive() == false) 
 		{
-			GameController.Instance.StartClient (inputField.text);
+			GameLogic.Instance.StartClient (inputField.text);
 
 			UpdateStartClientUI ();
 		}

@@ -20,7 +20,7 @@ public class Disk : AirHockeyNetworkBehaviour
     {
 		Debug.Log ("Disk.Start()");
 
-		GameController.Instance.setDisk (this);
+		GameLogic.Instance.setDisk (this);
 
         rigidBody = GetComponent<Rigidbody>();
         hostScore = GameObject.FindGameObjectWithTag("hostScore");
@@ -32,7 +32,7 @@ public class Disk : AirHockeyNetworkBehaviour
 
 	void OnDestroy()
 	{
-		GameController.Instance.setDisk (null);
+		GameLogic.Instance.setDisk (null);
 	}
 
     private void MsgFromServer(NetworkMessage netMsg)
@@ -41,11 +41,11 @@ public class Disk : AirHockeyNetworkBehaviour
         var msg = netMsg.ReadMessage<ScoresMessage>();
         RefreshScore(msg);
 
-		GameController.Instance.CheckClientScore ();
+		GameLogic.Instance.CheckClientScore ();
 
-		if (GameController.Instance.IsGameOver()) 
+		if (GameLogic.Instance.IsGameOver()) 
 		{
-			GameController.Instance.StopClient ();
+			GameLogic.Instance.StopClient ();
 		}
     }
 
@@ -95,10 +95,10 @@ public class Disk : AirHockeyNetworkBehaviour
 	private void HandleHostCollisions(Collision other)
     {		
 		if ("hostGoalLine".Equals (other.gameObject.tag)) {
-			GameController.Instance.IncrementHostScore();
+			GameLogic.Instance.IncrementHostScore();
 			SendScoreToClient ();
 		} else if ("clientGoalLine".Equals (other.gameObject.tag)) {
-			GameController.Instance.IncrementClientScore ();
+			GameLogic.Instance.IncrementClientScore ();
 			SendScoreToClient ();
 		} else if ("Player".Equals (other.gameObject.tag)) {
 			if (rigidBody.velocity == Vector3.zero) {
@@ -124,17 +124,17 @@ public class Disk : AirHockeyNetworkBehaviour
     private void SendScoreToClient()
     {
         var msg = new ScoresMessage();        
-		msg.hostScore = GameController.Instance.hostScore;        
-		msg.clientScore = GameController.Instance.clientScore;
+		msg.hostScore = GameLogic.Instance.hostScore;        
+		msg.clientScore = GameLogic.Instance.clientScore;
         NetworkServer.SendToAll(1001, msg);
         RefreshScore(msg);
 
-		GameController.Instance.CheckHostScore ();
+		GameLogic.Instance.CheckHostScore ();
 		Debug.Log ("DISK.client score=" + msg.clientScore + " hostScore=" + msg.hostScore);
-		Debug.Log ("DISK.isGameOver=>" + GameController.Instance.IsGameOver());
-		if (GameController.Instance.IsGameOver()) 
+		Debug.Log ("DISK.isGameOver=>" + GameLogic.Instance.IsGameOver());
+		if (GameLogic.Instance.IsGameOver()) 
 		{
-			GameController.Instance.StopHost ();
+			GameLogic.Instance.StopHost ();
 		}
     }
 

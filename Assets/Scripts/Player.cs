@@ -9,12 +9,9 @@ public class Player : AirHockeyNetworkBehaviour
 	public const float movementSpeed = 10f;
 
 	private const float horizontalLimit = 3.5f;
-	private const float increment = 0.05f;
+	private float increment = 0f;
 
 	private Disk disk;
-
-	private GameObject leftMarker;
-	private GameObject rightMarker;
 
 	bool isHost = false;
     bool painted = false;
@@ -28,45 +25,67 @@ public class Player : AirHockeyNetworkBehaviour
 		playerRigidBody = GetComponent<Rigidbody> ();
 		GameObject diskObject = GameObject.FindGameObjectWithTag("disk");
 		disk = diskObject.GetComponent<Disk>();
-
-		//Try using these markers instead of 'horizontalLimit'.
-		leftMarker = GameObject.FindGameObjectWithTag("leftMarker");
-		rightMarker = GameObject.FindGameObjectWithTag("rightMarker");
     }
 
     public override void OnStartServer()
     {
 		Debug.Log ("Player.OnStartServer");
 		isHost = true;
+
+		if (isLocalPlayer) 
+		{
+			GameLogic.Instance.RegisterLocalPlayer (this);
+		}
+
+		increment = GameLogic.Instance.getIncrement ();
+		Debug.Log ("Player.increment=" + increment);
     }
 
-    public override void OnStartLocalPlayer()
+	public override void OnStartLocalPlayer()
     {
 		Debug.Log ("Player.OnStartLocalPlayer");
-
-		//plane = GameObject.FindGameObjectWithTag ("plane");
-		//Debug.Log ("Plane=" + plane);
 
 		prepareSpawnPoint();
 
         prepareCameraToActivate();
+
+		if (isLocalPlayer)
+		{
+			GameLogic.Instance.RegisterLocalPlayer (this);
+		}
+
+		increment = GameLogic.Instance.getIncrement ();
+		Debug.Log ("Player.increment=" + increment);
     }
+
+	void Destroy()
+	{
+		Debug.Log ("Destroy()");
+		GameLogic.Instance.UnRegisterLocalPlayer ();
+	}
 
     void Update()
     {
-        if (!painted) {
+        if (!painted)
+		{
             painted = true;            
 		}
 
+		Debug.Log ("Player.Update isHost=" + isHost);
+
 		//if (isLocalPlayer && leftMarker != null && rightMarker != null) {
-		if (isLocalPlayer) {
+		if (isLocalPlayer) 
+		{
 			GetComponent<MeshRenderer> ().material.color = Color.red;
 
 			float inputX = Input.GetAxis ("Horizontal"); 
 
-			if (isHost) {
+			if (isHost)
+			{
 				handleHostInput (inputX);
-			} else {
+			} 
+			else 
+			{
 				handleClientInput (inputX);
 			}
 
@@ -101,7 +120,7 @@ public class Player : AirHockeyNetworkBehaviour
 	}
 
 	void handleInput(float inputX, float offsetX, float posX) {
-		if (isLeft(inputX) && posX - increment < -horizontalLimit) { //Left			
+		if (isLeft(inputX) && posX - increment < -horizontalLimit) { //Left
 			transform.localPosition = new Vector3 (
 				-horizontalLimit, 
 				transform.localPosition.y,
@@ -114,6 +133,34 @@ public class Player : AirHockeyNetworkBehaviour
 		} else {
 			transform.Translate (offsetX, 0, 0);
 		}
+	}
+
+	public void MoveLeft()
+	{
+		float offsetX = transform.localPosition.x - increment;
+		Debug.Log ("Player.MoveRight -> offsetX=" + offsetX);
+		if (offsetX < -horizontalLimit)
+		{
+			offsetX = -horizontalLimit;
+		}
+		transform.localPosition = new Vector3 (
+			offsetX, 
+			transform.localPosition.y,
+			transform.localPosition.z);
+	}
+
+	public void MoveRight()
+	{
+		float offsetX = transform.localPosition.x + increment;
+		Debug.Log ("Player.MoveRight -> offsetX=" + offsetX);
+		if (offsetX > horizontalLimit)
+		{
+			offsetX = horizontalLimit;
+		}
+		transform.localPosition = new Vector3 (
+			offsetX, 
+			transform.localPosition.y,
+			transform.localPosition.z);
 	}
 
 	void handleClientInput(float inputX) {
