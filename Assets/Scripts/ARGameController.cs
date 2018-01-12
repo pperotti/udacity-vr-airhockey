@@ -2,11 +2,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
-using GoogleARCore;
-using GoogleARCore.HelloAR;
+//using GoogleARCore;
+//using GoogleARCore.HelloAR;
 
 public class ARGameController : MonoBehaviour
 {
+	/*
 	/// <summary>
 	/// The first-person camera being used to render the passthrough camera image (i.e. AR background).
 	/// </summary>
@@ -155,7 +156,6 @@ public class ARGameController : MonoBehaviour
 		}
 	}
 
-
 	public void Update()
 	{
 		if (m_canDrawObject)
@@ -236,4 +236,5 @@ public class ARGameController : MonoBehaviour
 		Debug.Log ("ARGameController: On Right");
 		GameLogic.Instance.OnRightClick ();
 	}
+	*/
 }

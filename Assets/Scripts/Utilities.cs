@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GoogleARCore;
+//using GoogleARCore;
 
 public class Utilities : MonoBehaviour {
 
+	/*
 	/// <summary>
 	/// Quit the application if there was a connection error for the ARCore session.
 	/// </summary>
@@ -46,5 +47,5 @@ public class Utilities : MonoBehaviour {
 
 
 	}
-
+	*/
 }

@@ -16,8 +16,6 @@ TagManager:
   - disk
   - hostPlayer
   - clientPlayer
-  - clientCamera
-  - hostCamera
   - puck
   - wall
   - ClientCamera

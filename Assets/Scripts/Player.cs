@@ -193,7 +193,7 @@ public class Player : AirHockeyNetworkBehaviour
 
     void prepareCameraToActivate()
     {
-		GameObject clientCameraGameObject = GameObject.FindGameObjectWithTag ("clientCamera");
+		/*GameObject clientCameraGameObject = GameObject.FindGameObjectWithTag ("clientCamera");
 		GameObject hostCameraGameObject = GameObject.FindGameObjectWithTag ("hostCamera");
 
 		if (clientCameraGameObject != null) 
@@ -204,7 +204,7 @@ public class Player : AirHockeyNetworkBehaviour
 		if (hostCameraGameObject != null) 
 		{
 			hostCameraGameObject.SetActive (isServer);
-		}
+		}*/
     }
 
     void moveDisk()

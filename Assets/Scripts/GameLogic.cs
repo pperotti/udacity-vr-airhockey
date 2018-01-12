@@ -9,6 +9,11 @@ public class GameLogic : MonoBehaviour
 	public static GameLogic Instance { get; private set; }
 
 	/**
+	 * Determine whether the UI elements needs to always look at the user.
+	 */
+	public bool forceRelocatingUI = true;
+
+	/**
 	 * Client & Host Scores
 	 */
 	public int clientScore;
@@ -76,6 +81,12 @@ public class GameLogic : MonoBehaviour
 		networkManager = GetComponent<NetworkManager> ();
 
 		hud = hudPanel.GetComponent <HUD> ();
+
+		if (forceRelocatingUI) 
+		{
+			//hudPanel.transform.Rotate(new Vector3 (0, -180,	0));
+			//scorePanel.transform.Rotate(new Vector3 (0, -180, 0));
+		}
 
 	}
 

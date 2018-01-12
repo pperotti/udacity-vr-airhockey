@@ -190,3 +190,4 @@
 /Users/pperotti/Github/udacity-vr-airhockey-capstone/Temp/bin/Debug/Unity.Cecil.Mdb.dll
 /Users/pperotti/Github/udacity-vr-airhockey-capstone/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.dll
 /Users/pperotti/Github/udacity-vr-airhockey-capstone/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.xml
+/Users/pperotti/Github/udacity-vr-airhockey-capstone/Temp/bin/Debug/Google.ProtocolBuffers.dll
